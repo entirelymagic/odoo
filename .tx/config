@@ -1347,3 +1347,5 @@ file_filter = addons/website_twitter/i18n/<lang>.po
 source_file = addons/website_twitter/i18n/website_twitter.pot
 source_lang = en
 
+
+bin_path = C:/Program Files/wkhtmltopdf/bin
