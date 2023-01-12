@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class RealEstateProperty(models.Model):
@@ -17,9 +17,29 @@ class RealEstateProperty(models.Model):
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
     garden_area = fields.Integer(string='Garden Area')
-    garden_orientation = fields.Selection(string='Garden Orientation', selection=[
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West'),
-    ])
+    garden_orientation = fields.Selection(
+        string='Garden Orientation',
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ],
+    )
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
+        ],
+        copy=False,
+        default="new",
+    )
+    active = fields.Boolean(default=True)
+    
+    # buyer_id = fields.Many2one("res.partner", string="Buyer")
+    # salesman_id = fields.Many2one("res.user", string="Salesman")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    bonus_id = fields.Many2one("estate.bonus", string="Bonus")
