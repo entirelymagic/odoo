@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="model_purchase_order_action_rfq_sent" model="ir.actions.server">
+        <field name="name">Mark as Sent</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_rfq_sent()</field>
+    </record>
+
+    <record id="purchase_order_tree_inherit_portal" model="ir.ui.view">
+        <field name="name">purchase.order.tree</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="is_rfq_submitted" optional="show" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_form_inherit_portal" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='purchase_delivery_invoice']" position="after">
+                <page string="Customer Signature" id="customer_signature_information" groups="purchase.group_purchase_user, base.group_no_one"  
+                    attrs="{'invisible': [('signed_by', '=', False), ('signature', '=', False), ('signed_on', '=', False)]}">
+                    <group>
+                        <field name="signed_by"/>
+                        <field name="signed_on"/>
+                        <field name="signature" widget="image"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="is_rfq_submitted" attrs="{'invisible': [('is_rfq_submitted','=',False)]}"/>
+            </xpath>
+            <xpath expr="//form/sheet/div[@class='oe_button_box']" position="inside">                
+                <button name="preview_purchase_rfq"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-globe icon"
+                    attrs="{'invisible': [('state','!=', 'draft')]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Representative</span>
+                        <span class="o_stat_text">Preview</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
