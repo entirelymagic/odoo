@@ -1,18 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <!-- explicit list view definition -->
         <record model="ir.ui.view" id="estate_tree">
             <field name="name">Estate list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <tree decoration-primary="state=='new'" decoration-warning="state=='offer_received'"
-                    decoration-danger="state=='sold'" decoration-success="state=='offer_accepted'"
-                    decoration-muted="state=='canceled'">
+                <tree>
                     <!-- <tree> -->
                     <field name="name" />
                     <field name="description" />
-
                     <field name="postcode" />
                     <field name="expected_price" />
                     <field name="bedrooms" />
@@ -106,7 +103,5 @@
                 </search>
             </field>
         </record>
-
-
     </data>
 </odoo>

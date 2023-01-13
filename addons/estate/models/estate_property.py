@@ -38,8 +38,10 @@ class RealEstateProperty(models.Model):
         default="new",
     )
     active = fields.Boolean(default=True)
-    
-    # buyer_id = fields.Many2one("res.partner", string="Buyer")
-    # salesman_id = fields.Many2one("res.user", string="Salesman")
+    _inherits = {
+        'estate.property.type': 'property_type_id',
+    }
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesman_id = fields.Many2one("res.user", string="Salesman", default=lambda self: self.env.user)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     bonus_id = fields.Many2one("estate.bonus", string="Bonus")

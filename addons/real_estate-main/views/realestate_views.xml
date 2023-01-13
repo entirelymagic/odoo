@@ -1,0 +1,198 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="real_estate_tree">
+      <field name="name">real_estate list</field>
+      <field name="model">realestate.properties</field>
+      <field name="arch" type="xml">
+        <tree decoration-primary="status=='new'" decoration-warning="status=='offer_received'" 
+              decoration-danger="status=='sold'" decoration-success="status=='offer_accepted'" 
+              decoration-muted="status=='canceled'" >
+          <field name="name" decoration-bf="name"/>
+          <field name="description"/>
+          <field name="photo"/>
+
+          <field name="post_code"/>
+          <field name="expected_price" />
+          <field name="bedrooms"/>
+          <field name="facades"/>
+          <field name="garden"/>
+          <field name="garden_orient"/>
+          <field name="garage" />
+          <field name="status" />
+
+          <field name="available_from"/>
+          <field name="deadline"/>
+          <field name="selling_price"/>
+          <field name="living_area"/>
+          <field name="garden_area" />
+          <field name="total_area" />
+          <field name="email_id" />
+        </tree>
+      </field>
+    </record>
+
+    <!-- This creates the Kanban View For Properties -->
+
+    <record id="real_estate_kanban" model="ir.ui.view">
+        <field name="name">real_estate kanban</field>
+        <field name="model">realestate.properties</field>
+        <field name="arch" type="xml">
+            <kanban default_order="name">
+                <field name="name"/>
+                <field name="description"/>                              
+                <field name="expected_price"/>              
+                <field name="available_from"/>              
+                <field name="status"/>
+                <!-- <field name="property_image" widget = "image"/> -->
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <ul>
+                                    <li>
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        Description: <field name="description"/> 
+                                    </li>
+                                    <li>
+                                        Status: <field name="status"/>
+                                    </li>
+                                    <li>
+                                        Price: <field name="expected_price"/> 
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="real_estate_form">
+      <field name="name">real_estate form</field>
+      <field name="model">realestate.properties</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="description"/>
+              </group>
+              <group>
+                <field name="photo" widget='image' class='oe_avatar'/>
+              </group>
+            </group>
+            <notebook>
+                <page string="Description">
+                  <group>
+                    <group>
+                      <field name="post_code"/>
+                      <field name="bedrooms"/>
+                      <field name="facades"/>
+                      <field name="garden"/>
+                      <field name="garden_orient" attrs="{'invisible':[('garden', '==', False)]}" />
+                      <field name="garage" />
+                      <field name="status" />
+                      <field name="active" />
+                    </group>
+                    <group>
+                      <field name="available_from"/>
+                      <field name="deadline"/>
+                      <field name="selling_price"/>
+                      <field name="expected_price" />
+                      <field name="living_area"/>
+                      <field name="garden_area" attrs="{'invisible':[('garden', '==', False)]}" />
+                      <field name="total_area" />
+                      <field name="email_id" />
+                      <field name="owner_id" />
+                    </group>
+                  </group>
+                </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="real_estate_search">
+      <field name="name">real_estate search</field>
+      <field name="model">realestate.properties</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="description"/>
+
+          <field name="post_code"/>
+          <field name="expected_price" />
+          <field name="bedrooms"/>
+          <field name="facades"/>
+          <field name="garden"/>
+          <field name="garden_orient"/>
+
+          <field name="available_from"/>
+          <field name="selling_price"/>
+          <field name="living_area"/>
+          <field name="garage" />
+          <field name="garden_area" />
+          <field name="status" />
+          <field name="email_id" />
+          <!-- Filter -->
+          <filter string='Available properties' name='filter_by_properties' domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]" />
+          <!-- Group By -->
+          <filter string='Postcode' name='group_by_postcode' context='{"group_by":"post_code"}'/>
+          <filter string='Status' name='group_by_status' context='{"group_by":"status"}'/>
+        </search>
+      </field>
+    </record>
+
+    <!-- calender view -->
+    <record id="real_estate_view_calendar" model="ir.ui.view">
+    <field name="name">real_estate calendar</field>
+    <field name="model">realestate.properties</field>
+    <field name="arch" type="xml">
+        <calendar string="Property enlisted" date_start="available_from" date_stop="deadline" event_open_popup="true" mode="month" color="name" quick_add="False">
+            <field name="name" />
+            <field name="status" />
+        </calendar>
+    </field>
+    </record>
+
+    <!-- gantt view -->
+    <record id="real_estate_view_gantt" model="ir.ui.view">
+    <field name="name">real_estate gantt</field>
+    <field name="model">realestate.properties</field>
+    <field name="arch" type="xml">
+        <gantt string="Property Gantt view" date_start="available_from" date_stop="deadline" >
+        </gantt>
+    </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="real_estate.action_window">
+      <field name="name">Properties</field>
+      <field name="res_model">realestate.properties</field>
+      <field name="view_mode">kanban,tree,form,calendar,pivot,gantt,graph</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Real Estate" id="real_estate.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Adertisements" id="real_estate.advertisement" parent="real_estate.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Properties" id="real_estate.properties" parent="real_estate.advertisement"
+              action="real_estate.action_window"/>
+
+
+  </data>
+</odoo>

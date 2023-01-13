@@ -5,4 +5,4 @@ class EstateBonus(models.Model):
     _name = "estate.bonus"
     _description = "Here are stored Real Estate bonuses"
     
-    bonus = fields.Char(string="Test", default="TestBonus")
+    bonus = fields.Integer(string="Bonus", default=0)
