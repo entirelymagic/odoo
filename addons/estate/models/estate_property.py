@@ -8,7 +8,7 @@ class RealEstateProperty(models.Model):
     name = fields.Char('Plan Name', required=True, translate=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Post Code', required=True)
-    date_availability = fields.Char(string='Available From')
+    date_availability = fields.Date(string='Available from', default= fields.datetime.now(), copy=False)
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price')
     bedrooms = fields.Integer(string='Bedrooms')
@@ -41,7 +41,7 @@ class RealEstateProperty(models.Model):
     _inherits = {
         'estate.property.type': 'property_type_id',
     }
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
-    salesman_id = fields.Many2one("res.user", string="Salesman", default=lambda self: self.env.user)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    bonus_id = fields.Many2one("estate.bonus", string="Bonus")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    # salesman_id = fields.Many2one("res.user", string="Salesman", default=lambda self: self.env.user)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True, ondelete="restrict")
+    # offers_ids = fields.One2many("estate.property", "offer")

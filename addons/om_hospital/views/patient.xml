@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hospital_patient_form" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="is_child" />
+                        <field name="age" />
+                        <field name="gender" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="view_hospital_patient_tree" model="ir.ui.view">
+        <field name="name">hospital.patient.tree</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name" />
+                <field name="age" />
+                <field name="gender" />
+            </form>
+        </field>
+    </record>
+
+    <record
+        model="ir.ui.view" id="hospital_patient_search">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hospital.patient</field>
+        <field
+            name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="age" />
+                <field name="gender" />
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_hospital_patient"
+        model="ir.actions.act_window">
+        <field name="name">Patient</field>
+        <!-- <field name="type">ir.actions.act_window</field> -->
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hospital_patient"
+        name="Patient"
+        parent="menu_hospital_operations"
+        action="action_hospital_patient"
+        sequence="10" />
+</odoo>
