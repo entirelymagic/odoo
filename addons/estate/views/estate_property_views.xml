@@ -41,7 +41,7 @@
                             <field name="name">estate.property.name</field>
 
                         </h1>
-                            <field name="tags_ids" widget="many2many_tags">estate.property.tags_ids</field>
+                        <field name="tags_ids" widget="many2many_tags">estate.property.tags_ids</field>
                         <group>
                             <field name="property_type_id" />
                             <field name="postcode" />
@@ -72,7 +72,14 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids" widget="many2_one_tags"/>
+                                <field name="offer_ids" widget="many2one"
+                                editable="bottom" nolabel="1">
+                                    <tree string="Offers">
+                                        <field name="price"/>
+                                        <field name="status" />
+                                        <field name="partner_id" widget="many2one" />
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Other Info">
                                 <group>
