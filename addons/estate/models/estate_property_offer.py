@@ -4,7 +4,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Here are stored Real Estate property offers"
     
-    price = fields.Float(string="Price", digits=2)
+    price = fields.Float(string="Price", digits=(2,2))
     status = fields.Selection(
         string="Status", 
         copy=False,
@@ -16,3 +16,5 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    validity = fields.Integer(string="Validity", default=7)
+    

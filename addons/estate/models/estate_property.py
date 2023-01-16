@@ -13,6 +13,7 @@ class RealEstateProperty(models.Model):
     selling_price = fields.Float(string='Selling Price')
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area')
+    total_area = fields.Integer(string='Total Area', compute="compute_total_area")
     facades = fields.Integer(string='Facades')
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
@@ -44,3 +45,9 @@ class RealEstateProperty(models.Model):
     
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    
+    
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
