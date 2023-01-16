@@ -24,6 +24,8 @@
                     <field name="living_area" />
                     <field name="garden_area" />
                     <field name="state" />
+                    <field name="buyer_id" />
+                    <field name="salesman_id" />
                 </tree>
             </field>
         </record>
@@ -68,10 +70,12 @@
                                     </group>
                                 </group>
                             </page>
-                        </notebook>
-                        <notebook>
+
                             <page string="Other Info">
+                                <group>
                                 <field name="buyer_id" />
+                                <field name="salesman_id" />
+                                </group>
                             </page>
                         </notebook>
                     </sheet>

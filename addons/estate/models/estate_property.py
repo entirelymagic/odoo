@@ -11,7 +11,7 @@ class RealEstateProperty(models.Model):
     date_availability = fields.Date(string='Available from', default= fields.datetime.now(), copy=False)
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price')
-    bedrooms = fields.Integer(string='Bedrooms')
+    bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area')
     facades = fields.Integer(string='Facades')
     garage = fields.Boolean(string='Garage')
@@ -42,6 +42,6 @@ class RealEstateProperty(models.Model):
         'estate.property.type': 'property_type_id',
     }
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    # salesman_id = fields.Many2one("res.user", string="Salesman", default=lambda self: self.env.user)
+    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True, ondelete="restrict")
     # offers_ids = fields.One2many("estate.property", "offer")

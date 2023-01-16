@@ -6,9 +6,14 @@
             <field name="res_model">estate.property</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <record model="ir.actions.act_window" id="estate_type_action_window">
+        <record model="ir.actions.act_window" id="estate_property_type_action_window">
             <field name="name">Property Types</field>
             <field name="res_model">estate.property.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window" id="estate_property_tag_action_window">
+            <field name="name">Property Tags</field>
+            <field name="res_model">estate.property.tag</field>
             <field name="view_mode">tree,form</field>
         </record>
         <!-- Top menu item -->
@@ -20,6 +25,8 @@
         <menuitem name="Properties" id="estate_property_menu" parent="estate_advertisement_menu"
             action="estate.action_window" />
         <menuitem name="Property Types" id="estate_property_type_menu" parent="estate_settings_menu"
-            action="estate_type_action_window" />
+            action="estate_property_type_action_window" />
+        <menuitem name="Property Tags" id="estate_property_tag_menu" parent="estate_settings_menu"
+            action="estate_property_tag_action_window" />
     </data>
 </odoo>
