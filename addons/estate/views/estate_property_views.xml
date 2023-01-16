@@ -36,11 +36,12 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <group>
-                            <h2>
-                                <field name="name" />
-                            </h2>
-                        </group>
+                        <h1>
+
+                            <field name="name">estate.property.name</field>
+
+                        </h1>
+                            <field name="tags_ids" widget="many2many_tags">estate.property.tags_ids</field>
                         <group>
                             <field name="property_type_id" />
                             <field name="postcode" />
@@ -70,11 +71,13 @@
                                     </group>
                                 </group>
                             </page>
-
+                            <page string="Offers">
+                                <field name="offer_ids" widget="many2_one_tags"/>
+                            </page>
                             <page string="Other Info">
                                 <group>
-                                <field name="buyer_id" />
-                                <field name="salesman_id" />
+                                    <field name="buyer_id" />
+                                    <field name="salesman_id" />
                                 </group>
                             </page>
                         </notebook>
