@@ -1,4 +1,6 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+
 
 
 class RealEstateProperty(models.Model):
@@ -8,12 +10,12 @@ class RealEstateProperty(models.Model):
     name = fields.Char('Plan Name', required=True, translate=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Post Code', required=True)
-    date_availability = fields.Date(string='Available from', default= fields.datetime.now(), copy=False)
+    date_availability = fields.Date(string='Available from', default=fields.datetime.now(), copy=False)
     expected_price = fields.Float(string='Expected Price', required=True)
-    selling_price = fields.Float(string='Selling Price')
+    selling_price = fields.Float(string='Selling Price', readonly=True)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area')
-    total_area = fields.Integer(string='Total Area', compute="compute_total_area")
+    total_area = fields.Integer(string='Total Area', compute="_compute_total_area", default=0)
     facades = fields.Integer(string='Facades')
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
@@ -41,13 +43,38 @@ class RealEstateProperty(models.Model):
     active = fields.Boolean(default=True)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True, ondelete="restrict")
-    
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type", required=True, ondelete="restrict"
+    )
+
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    
-    
-    @api.depends("garden_area", "living_area")
+    best_price = fields.Integer(string="Best Price", compute="_compute_best_offer")
+
+    @api.onchange("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids")
+    def _compute_best_offer(self):
+        for record in self:
+            try:
+                record.best_price = max(record.mapped('offer_ids.price'))
+            except ValueError:
+                record.best_price = 0
+
+    def action_set_estate_property_as_canceled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("You cannot cancel a sold property!")
+            record.state = "canceled"
+        return True
+    def action_set_estate_property_as_sold(self):
+        for record in self:
+            if record.state == "canceled":
+                raise UserError("You cannot sell a canceled property!")
+            record.state = "sold"
+        return True
+    
+    
