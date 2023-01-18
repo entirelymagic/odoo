@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class RealEstateProperty(models.Model):
@@ -11,8 +11,8 @@ class RealEstateProperty(models.Model):
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Post Code', required=True)
     date_availability = fields.Date(string='Available from', default=fields.datetime.now(), copy=False)
-    expected_price = fields.Float(string='Expected Price', required=True)
-    selling_price = fields.Float(string='Selling Price', readonly=True)
+    expected_price = fields.Float(string='Expected Price', required=True, default=0)
+    selling_price = fields.Float(string='Selling Price', readonly=True )
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area')
     total_area = fields.Integer(string='Total Area', compute="_compute_total_area", default=0)
@@ -70,11 +70,35 @@ class RealEstateProperty(models.Model):
                 raise UserError("You cannot cancel a sold property!")
             record.state = "canceled"
         return True
+
     def action_set_estate_property_as_sold(self):
         for record in self:
             if record.state == "canceled":
                 raise UserError("You cannot sell a canceled property!")
             record.state = "sold"
         return True
+
+    _sql_constraints = [
+        (
+            'check_expected_price_positive',
+            'CHECK(expected_price >= 0)',
+            'The expected price must be positive!',
+        ),
+        (
+            'check_selling_price_positive',
+            'CHECK(selling_price >= 0)',
+            'The selling price must be positive!',
+        ),
+        (
+            'unique_property_name',
+            'UNIQUE(name)',
+            'The property name must be unique!',
+        ),
+    ]
     
-    
+    @api.constrains('selling_price')
+    def check_property_selling_price(self):
+        """Selling price cannot be lower than 90% of the expected price"""
+        for record in self:
+            if record.selling_price < 0.9 * record.expected_price:
+                raise UserError("The selling price cannot be lower than 90% of the expected price!")
