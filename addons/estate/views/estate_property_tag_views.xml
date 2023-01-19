@@ -9,6 +9,7 @@
                 <tree string="Event Category">
                     <!-- <field name="sequence" widget="handle" /> -->
                     <field name="name" />
+                    <field name="color" />
                 </tree>
             </field>
         </record>
@@ -20,23 +21,32 @@
                 <form string="Event Category">
                     <sheet>
                         <div class="oe_title">
-                            <h1>
-                                <field name="name" />
-                            </h1>
-                        </div>
-                            <notebook>
-                                <page string="Properties">
+                            <header>
+                                <h1>
+                                    <field name="name" />
+                                </h1>
+
+                                <h4>
                                     <group>
-                                        <field name="property_ids" string ="">
-                                            <tree string="Tags" editable="bottom">
-                                                <field name="name" string="Title"/>
-                                                <field name="expected_price"  />
-                                                <field name="state" string="Status" />
-                                            </tree>
-                                        </field>
+                                        <field name="color" />
                                     </group>
-                                </page>
-                            </notebook>
+                                </h4>
+                            </header>
+
+                        </div>
+                        <notebook>
+                            <page string="Properties">
+                                <group>
+                                    <field name="property_ids" string="">
+                                        <tree string="Tags" editable="bottom">
+                                            <field name="name" string="Title" />
+                                            <field name="expected_price" />
+                                            <field name="state" string="Status" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

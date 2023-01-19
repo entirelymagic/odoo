@@ -50,7 +50,7 @@
                                 string="SOLD" />
                             <field name="state" widget="statusbar" />
                         </header>
-                        <field name="tags_ids" widget="many2many_tags">estate.property.tags_ids</field>
+                        <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" >estate.property.tags_ids</field>
                         <group>
                             <field name="property_type_id" options="{'no_create': True }" />
                             <field name="postcode" />
