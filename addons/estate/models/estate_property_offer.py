@@ -29,7 +29,7 @@ class EstatePropertyOffer(models.Model):
             'The offer price must be a positive number!',
         ),
     ]
-    
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -70,5 +70,3 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You cannot refuse an offer on a canceled property!")
             record.status = "refused"
         return True
-
-

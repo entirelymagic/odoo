@@ -20,13 +20,11 @@
                     <field name="garden" />
                     <field name="garden_orientation" />
                     <field name="garage" />
-
                     <field name="date_availability" />
                     <field name="selling_price" />
                     <field name="living_area" />
                     <field name="garden_area" />
                     <field name="total_area" />
-
                     <field name="state" />
                     <field name="buyer_id" />
                     <field name="salesman_id" />
@@ -44,13 +42,16 @@
                             <field name="name">estate.property.name</field>
                         </h1>
                         <header>
-                            <button name="action_set_estate_property_as_canceled" type="object"
-                                string="CANCEL" />
-                            <button name="action_set_estate_property_as_sold" type="object"
-                                string="SOLD" />
+                            <button name="action_set_estate_property_as_canceled"
+                                type="object"
+                                string="CANCEL"  attrs="{'invisible':['|', ('state', '==', 'sold'), ('state', '==', 'canceled')]}"/>
+                            <button name="action_set_estate_property_as_sold"
+                                type="object"
+                                string="SOLD" attrs="{'invisible':['|', ('state', '=', 'sold'), ('state', '=', 'canceled')]}" />
                             <field name="state" widget="statusbar" />
                         </header>
-                        <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" >estate.property.tags_ids</field>
+                        <field name="tags_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}">estate.property.tags_ids</field>
                         <group>
                             <field name="property_type_id" options="{'no_create': True }" />
                             <field name="postcode" />
