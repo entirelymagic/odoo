@@ -14,3 +14,6 @@ class EstatePropertyTag(models.Model):
             'The property tag name must be unique!',
         ),
     ]
+
+    property_ids = fields.One2many("estate.property", "tags_ids", string="Properties")
+        
