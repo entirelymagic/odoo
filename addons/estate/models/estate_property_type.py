@@ -7,6 +7,7 @@ class EstatePropertyType(models.Model):
     _order = "name"
 
     name = fields.Char(string='Property Type', required=True, translate=True)
+    sequence = fields.Integer(string="Sequence", default=1, help="Used to order Properties types, lower is better.")
 
     _sql_constraints = [
         (
