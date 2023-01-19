@@ -37,18 +37,16 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form>
-
                     <sheet>
                         <h1>
-
                             <field name="name">estate.property.name</field>
-
                         </h1>
                         <header>
                             <button name="action_set_estate_property_as_canceled" type="object"
                                 string="CANCEL" />
                             <button name="action_set_estate_property_as_sold" type="object"
                                 string="SOLD" />
+                             <field name="state" widget="statusbar" />
                         </header>
                         <field name="tags_ids" widget="many2many_tags">estate.property.tags_ids</field>
                         <group>
