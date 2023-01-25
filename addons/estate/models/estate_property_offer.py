@@ -70,3 +70,11 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You cannot refuse an offer on a canceled property!")
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        prop = self.env['estate.property'].browse(vals['property_id'])
+        if 'price' in vals and vals['price'] < prop.expected_price:
+            raise UserError("Offer amount is lower than expected price")
+        prop.state = 'offer_received'
+        return super().create(vals)

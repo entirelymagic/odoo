@@ -1,7 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare, float_is_zero
-
 
 class RealEstateProperty(models.Model):
     _name = "estate.property"
@@ -13,7 +11,7 @@ class RealEstateProperty(models.Model):
     postcode = fields.Char(string='Post Code', required=True)
     date_availability = fields.Date(string='Available from', default=fields.datetime.now(), copy=False)
     expected_price = fields.Float(string='Expected Price', required=True, default=0)
-    selling_price = fields.Float(string='Selling Price', readonly=True )
+    selling_price = fields.Float(string='Selling Price', readonly=True)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area')
     total_area = fields.Integer(string='Total Area', compute="_compute_total_area", default=0)
@@ -96,10 +94,23 @@ class RealEstateProperty(models.Model):
             'The property name must be unique!',
         ),
     ]
-    
+
     @api.constrains('selling_price')
     def check_property_selling_price(self):
         """Selling price cannot be lower than 90% of the expected price"""
         for record in self:
             if record.selling_price < 0.9 * record.expected_price:
                 raise UserError("The selling price cannot be lower than 90% of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_state_not_new_or_canceled(self):
+        for prop in self:
+            if prop.state not in ('new', 'canceled'):
+                raise UserError("Cannot delete property with state '%s'" % prop.state)
+        # return super(RealEstateProperty, self).unlink()
+
+    @api.model
+    def create(self, vals):
+        if vals["state"] != 'new':
+            raise UserError("Cannot create offer for property with state '%s'" % vals["state"])
+        return super().create(vals)
